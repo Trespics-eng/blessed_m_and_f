@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Blessing Called Mother and Father - Greeting Card</title>
+  
+  <!-- Google Fonts: Great Vibes for handwritten calligraphy & Montserrat for subtle UI text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,600;1,300&family=Parisienne&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* Custom Red & White Theme Palette & Calligraphy Styling */
+    :root {
+      --crimson-deep: #7a0c1a;
+      --crimson-main: #a81c2e;
+      --rose-light: #fff0f2;
+      --rose-border: rgba(168, 28, 46, 0.25);
+    }
+
+    body {
+      background: radial-gradient(circle at center, #9e1428 0%, #520510 60%, #2b0006 100%);
+      font-family: 'Great Vibes', cursive;
+      color: #5c0712;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient background watermark patterned texture */
+    .bg-pattern {
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.05) 2px, transparent 0);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Subtle shimmering background vignette */
+    .bg-glow {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, rgba(230, 50, 75, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Calligraphy Typography */
+    .font-calligraphy {
+      font-family: 'Great Vibes', cursive;
+    }
+    .font-parisienne {
+      font-family: 'Parisienne', cursive;
+    }
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+    .font-sans-ui {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Card Frame & Shadow */
+    .card-container {
+      background: linear-gradient(135deg, #ffffff 0%, #fff7f8 50%, #fde8eb 100%);
+      box-shadow: 
+        0 25px 60px -15px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+        0 0 35px rgba(168, 28, 46, 0.3);
+      position: relative;
+      z-index: 10;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    /* Double Filigree Borders */
+    .card-border-outer {
+      border: 2px solid rgba(168, 28, 46, 0.3);
+      padding: 6px;
+      border-radius: 2rem;
+    }
+    
+    .card-border-inner {
+      border: 1px dashed rgba(168, 28, 46, 0.4);
+      border-radius: 1.7rem;
+      padding: 2.5rem 2rem;
+      position: relative;
+    }
+
+    @media (max-width: 640px) {
+      .card-border-inner {
+        padding: 1.5rem 1rem;
+      }
+    }
+
+    /* Stanza Animation */
+    .stanza {
+      opacity: 0;
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .stanza:nth-child(1) { animation-delay: 0.1s; }
+    .stanza:nth-child(2) { animation-delay: 0.3s; }
+    .stanza:nth-child(3) { animation-delay: 0.5s; }
+    .stanza:nth-child(4) { animation-delay: 0.7s; }
+    .stanza:nth-child(5) { animation-delay: 0.9s; }
+
+    @keyframes fadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Amen Interactive Button */
+    .amen-btn {
+      font-family: 'Parisienne', cursive;
+      background: linear-gradient(135deg, #a81c2e 0%, #7a0c1a 100%);
+      box-shadow: 0 8px 20px -4px rgba(122, 12, 26, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .amen-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 12px 25px -4px rgba(122, 12, 26, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+      background: linear-gradient(135deg, #bd2438 0%, #8c1020 100%);
+    }
+    .amen-btn:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    /* Revealed Heartfelt Message Box */
+    .thank-you-card {
+      opacity: 0;
+      max-height: 0;
+      transform: translateY(-10px) scale(0.95);
+      overflow: hidden;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .thank-you-card.show {
+      opacity: 1;
+      max-height: 250px;
+      transform: translateY(0) scale(1);
+      margin-top: 1.5rem;
+    }
+
+    /* Floating Red Particle Elements */
+    .floating-particle {
+      position: fixed;
+      bottom: -60px;
+      pointer-events: none;
+      user-select: none;
+      z-index: 50;
+      animation: floatParticle 7s linear forwards;
+      filter: drop-shadow(0 2px 5px rgba(120, 10, 25, 0.3));
+    }
+
+    @keyframes floatParticle {
+      0% {
+        transform: translateY(0) rotate(0deg) scale(0.8);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.9;
+      }
+      85% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-115vh) rotate(25deg) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    /* Heart pulse effect */
+    @keyframes heartPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+    .pulse-heart {
+      animation: heartPulse 2.2s infinite ease-in-out;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center p-4 sm:p-8">
+
+  <!-- Ambient Background overlays -->
+  <div class="bg-pattern"></div>
+  <div class="bg-glow"></div>
+
+  <!-- MAIN GREETING CARD CONTAINER -->
+  <main class="card-container max-w-2xl w-full rounded-3xl p-3 sm:p-5 my-6">
+    <div class="card-border-outer">
+      <div class="card-border-inner bg-white/60 backdrop-blur-sm text-center">
+
+        <!-- Corner Floral SVG Ornaments (Red Monochrome) -->
+        <svg class="absolute top-3 left-3 w-10 h-10 text-[#a81c2e] opacity-70" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M10 10 Q 50 10 50 50 Q 10 50 10 10 Z"></path>
+          <path d="M10 10 C 25 30 35 30 50 10 C 30 25 30 35 10 50 Z"></path>
+          <circle cx="20" cy="20" r="4"></circle>
+        </svg>
+        <svg class="absolute top-3 right-3 w-10 h-10 text-[#a81c2e] opacity-70 transform rotate-90" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M10 10 Q 50 10 50 50 Q 10 50 10 10 Z"></path>
+          <path d="M10 10 C 25 30 35 30 50 10 C 30 25 30 35 10 50 Z"></path>
+          <circle cx="20" cy="20" r="4"></circle>
+        </svg>
+        <svg class="absolute bottom-3 left-3 w-10 h-10 text-[#a81c2e] opacity-70 transform -rotate-90" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M10 10 Q 50 10 50 50 Q 10 50 10 10 Z"></path>
+          <path d="M10 10 C 25 30 35 30 50 10 C 30 25 30 35 10 50 Z"></path>
+          <circle cx="20" cy="20" r="4"></circle>
+        </svg>
+        <svg class="absolute bottom-3 right-3 w-10 h-10 text-[#a81c2e] opacity-70 transform rotate-180" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M10 10 Q 50 10 50 50 Q 10 50 10 10 Z"></path>
+          <path d="M10 10 C 25 30 35 30 50 10 C 30 25 30 35 10 50 Z"></path>
+          <circle cx="20" cy="20" r="4"></circle>
+        </svg>
+
+        <!-- Header Icon & Title -->
+        <header class="mb-6 pt-2">
+          <div class="flex items-center justify-center gap-3 mb-2">
+            <span class="text-2xl text-[#a81c2e] pulse-heart">❦</span>
+            <span class="h-[1px] w-12 bg-gradient-to-r from-transparent via-[#a81c2e] to-transparent"></span>
+            <span class="text-3xl text-[#a81c2e] pulse-heart">❤️</span>
+            <span class="h-[1px] w-12 bg-gradient-to-r from-transparent via-[#a81c2e] to-transparent"></span>
+            <span class="text-2xl text-[#a81c2e] pulse-heart">❦</span>
+          </div>
+
+          <h1 class="font-calligraphy text-4xl sm:text-6xl text-[#7a0c1a] font-bold leading-tight tracking-wide drop-shadow-sm">
+            A Blessing Called<br>Mother & Father
+          </h1>
+          <p class="font-cinzel text-xs sm:text-sm tracking-[0.25em] text-[#a81c2e] uppercase mt-2 opacity-85 font-semibold">
+            Dedicated with Endless Love
+          </p>
+        </header>
+
+        <!-- Divider Line -->
+        <div class="w-32 h-[1px] bg-gradient-to-r from-transparent via-[#a81c2e]/40 to-transparent mx-auto my-6"></div>
+
+        <!-- POEM STANZAS -->
+        <article class="poem-body space-y-7 text-xl sm:text-3xl text-[#4a0610] leading-snug sm:leading-relaxed">
+
+          <!-- Stanza 1: Mother -->
+          <section class="stanza">
+            <p class="font-semibold text-[#8c1020] text-2xl sm:text-4xl mb-1">
+              <span class="text-lg">🌹</span> Mother, you carried me before I knew the light,
+            </p>
+            <p>You held me through the days and through the night.</p>
+            <p>Your gentle hands that wiped my tears away</p>
+            <p>Taught me that love grows deeper every day.</p>
+            <p>You gave up sleep, you gave up rest,</p>
+            <p>You gave your heart, you gave your best.</p>
+            <p>Your prayers went up when I could not pray,</p>
+            <p>And lifted me along life’s way.</p>
+          </section>
+
+          <!-- Stanza 2: Father -->
+          <section class="stanza">
+            <p class="font-semibold text-[#8c1020] text-2xl sm:text-4xl mb-1 mt-4">
+              <span class="text-lg">🍷</span> Father, you stood like a mountain strong,
+            </p>
+            <p>Showing me where I truly belong.</p>
+            <p>You worked through sun and worked through rain,</p>
+            <p>Carrying burdens and hiding your pain.</p>
+            <p>You taught me to walk with courage and pride,</p>
+            <p>With honesty and truth always at my side.</p>
+            <p>Your quiet sacrifice, your steady hand,</p>
+            <p>Helped me rise and helped me stand.</p>
+          </section>
+
+          <!-- Stanza 3: Gratitude -->
+          <section class="stanza">
+            <p class="font-semibold text-[#8c1020] text-2xl sm:text-4xl mb-1 mt-4">
+              <span class="text-lg">🕊️</span> How blessed I am to call you mine,
+            </p>
+            <p>Two precious gifts, a love divine.</p>
+            <p>For every meal and every lesson learned,</p>
+            <p>For every sacrifice that you have earned,</p>
+            <p>I thank you, with all that I can give,</p>
+            <p>For showing me how to truly live.</p>
+          </section>
+
+          <!-- Stanza 4: Blessing -->
+          <section class="stanza">
+            <p class="font-semibold text-[#8c1020] text-2xl sm:text-4xl mb-1 mt-4">
+              <span class="text-lg">✨</span> So may God bless you, and keep you near,
+            </p>
+            <p>May He wipe away each worry and fear.</p>
+            <p>May His peace surround you, His joy be your song,</p>
+            <p>And may His mercy guide you all life long.</p>
+            <p>May He be with you in every season,</p>
+            <p>Give you health, and a heart at peace with reason.</p>
+            <p>And may the love you gave so freely to me</p>
+            <p>Return to you, abundantly.</p>
+          </section>
+
+          <!-- Stanza 5: Final -->
+          <section class="stanza pt-2">
+            <p class="font-semibold text-[#7a0c1a] text-3xl sm:text-4xl">
+              <span class="text-xl">💖</span> Mother and Father, my gift from above,
+            </p>
+            <p class="text-2xl sm:text-3xl italic text-[#991424]">I am forever grateful for your love.</p>
+          </section>
+        </article>
+
+        <!-- Divider Line -->
+        <div class="w-32 h-[1px] bg-gradient-to-r from-transparent via-[#a81c2e]/40 to-transparent mx-auto my-8"></div>
+
+        <!-- AMEN INTERACTIVE SECTION -->
+        <div class="amen-section py-2">
+          <button id="amenBtn" class="amen-btn text-white text-2xl sm:text-3xl px-8 py-3 rounded-full cursor-pointer inline-flex items-center gap-3">
+            <span>✧</span>
+            <span>Amen</span>
+            <span>✧</span>
+          </button>
+
+          <!-- Hidden revealed message -->
+          <div id="thankYouCard" class="thank-you-card mx-auto max-w-md">
+            <div class="bg-[#fff0f2] border border-[#a81c2e]/30 rounded-2xl p-5 shadow-inner">
+              <div class="text-2xl mb-1">💌</div>
+              <p class="font-parisienne text-2xl sm:text-3xl text-[#7a0c1a] leading-relaxed">
+                Thank you for everything you have done in my life.
+              </p>
+              <p class="font-sans-ui text-[11px] uppercase tracking-widest text-[#a81c2e] mt-2 font-medium">
+                With all my heart & soul
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Footer -->
+        <footer class="mt-8 pt-4 border-t border-[#a81c2e]/15 font-sans-ui text-xs text-[#a81c2e]/80 tracking-wide">
+          Crafted with love for Mom & Dad • <span class="pulse-heart text-red-600">❤️</span>
+        </footer>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function() {
+      // Elements
+      const amenBtn = document.getElementById('amenBtn');
+      const thankYouCard = document.getElementById('thankYouCard');
+
+      // Red/Rose Monochromatic Emoji Array
+      const RED_EMOJIS = ['❤️', '🌹', '💖', '✨', '🥀', '💌', '🌸', '🍒', '❣️', '🌺', '🍷', '⭐', '🕊️'];
+      const MAX_PARTICLES = 30;
+      let activeParticles = 0;
+
+      // Create Floating Particle Logic
+      function spawnParticle(force = false, startX = null, startY = null) {
+        if (activeParticles >= MAX_PARTICLES && !force) return;
+
+        const particle = document.createElement('div');
+        particle.classList.add('floating-particle');
+        particle.textContent = RED_EMOJIS[Math.floor(Math.random() * RED_EMOJIS.length)];
+
+        // Position
+        if (startX !== null) {
+          particle.style.left = startX + 'px';
+          particle.style.bottom = (window.innerHeight - startY) + 'px';
+        } else {
+          particle.style.left = (Math.random() * 92 + 4) + 'vw';
+        }
+
+        // Random sizing between 1.4rem and 2.6rem
+        const size = 1.4 + Math.random() * 1.2;
+        particle.style.fontSize = size + 'rem';
+
+        // Duration
+        const duration = 5 + Math.random() * 4;
+        particle.style.animationDuration = duration + 's';
+
+        document.body.appendChild(particle);
+        activeParticles++;
+
+        // Clean up
+        const cleanup = () => {
+          if (particle.parentNode) {
+            particle.remove();
+            activeParticles--;
+          }
+        };
+
+        setTimeout(cleanup, duration * 1000);
+        particle.addEventListener('animationend', cleanup);
+      }
+
+      // Amen Button Click Interaction
+      amenBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+
+        // Reveal Heartfelt Message
+        thankYouCard.classList.add('show');
+
+        // Burst of Red Hearts & Flowers
+        const rect = amenBtn.getBoundingClientRect();
+        const btnCenterX = rect.left + rect.width / 2;
+        const btnCenterY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 12; i++) {
+          setTimeout(() => {
+            spawnParticle(true, btnCenterX + (Math.random() * 80 - 40), btnCenterY);
+          }, i * 60);
+        }
+      });
+
+      // Background Continuous Gentle Stream
+      setInterval(() => {
+        if (activeParticles < MAX_PARTICLES) {
+          spawnParticle(false);
+        }
+      }, 700);
+
+      // Initial Entrance Burst
+      for (let i = 0; i < 6; i++) {
+        setTimeout(() => spawnParticle(true), i * 180);
+      }
+
+      // Click Anywhere to Spawn Particle Effect
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('#amenBtn')) return;
+        spawnParticle(true, e.clientX, e.clientY);
+      });
+    })();
+  </script>
+</body>
+</html>
